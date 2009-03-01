@@ -1,11 +1,8 @@
-ActiveKV: Active Key/Value objects
-==================================
+= ActiveKV: Active Key/Value objects
 ActiveKV provides a wrapper around Moneta to allow for active objects that can be
 searched and persisted into configured key value stores. Values are serialised JSON.
 
-Getting Started
-===============
-
+== Getting Started
 Create an ActiveKV configuration file:
   -- config/kv.yml
   development:
