@@ -1,0 +1,37 @@
+ActiveKV: Active Key/Value objects
+==================================
+ActiveKV provides a wrapper around Moneta to allow for active objects that can be
+searched and persisted into configured key value stores. Values are serialised JSON.
+
+Getting Started
+===============
+
+Create an ActiveKV configuration file:
+  -- config/kv.yml
+  development:
+    default:
+      driver: memory
+  test:
+    default:
+      driver: memory
+
+Initialise the ActiveKV infrastructure:
+  require 'activekv'
+  ActiveKV::Base.configure('config/kv.yml')
+
+Create your ActiveKV object:
+  class MyPersistentObj < ActiveKV::Base
+    key           :name
+    attr_accessor :x
+  end
+
+Store your object:
+  o = MyPersistentObj.new
+  o.name = "asdasd"
+  o.x = 12
+  o.save! 
+
+Load your object:
+  r = MyPersistentObj.find("asdasd")
+  p r.name
+  p r.x
