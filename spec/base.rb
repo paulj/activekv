@@ -89,4 +89,15 @@ describe "ActiveKV::Base when configured" do
     
     Found.find('myname').name.should == 'myname'
   end
+  
+  it "should allow an object to be created with a hash of parameters" do
+    class WithSomeParams < ActiveKV::Base
+      key           :name
+      attr_accessor :another_prop
+    end
+    
+    p = WithSomeParams.new :name => 'asr', :another_prop => 'world'
+    p.name.should == 'asr'
+    p.another_prop.should == 'world'
+  end
 end

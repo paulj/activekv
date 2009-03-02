@@ -5,6 +5,10 @@ module ActiveKV
     # Default the key property and configured state to empty states
     @@configured = nil, false
     
+    def initialize(config = {})
+      apply_hash!(config)
+    end
+    
     # Configures the ActiveKV support with the given configuration file
     def self.configure(config_file)
       # Determine our environment
@@ -76,9 +80,7 @@ module ActiveKV
         # Decode the found value, then apply each property in the JSON to the object
         vals = ActiveSupport::JSON.decode(found_val)
         result = new
-        vals.each do |k, v|
-          result.send("#{k}=", v)
-        end
+        result.apply_hash!(vals)
         result
       end
 
@@ -110,6 +112,12 @@ module ActiveKV
       
       # Retrieve the appropriate store, and save
       self.class.store_instance[key_val] = new_val
+    end
+    
+    def apply_hash!(props)
+      props.each do |k, v|
+        send("#{k}=", v)
+      end
     end
   end
   
