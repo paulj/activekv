@@ -1,7 +1,6 @@
 require 'rubygems'
 begin
   require 'moneta'
-  require 'moneta/memory'
 rescue LoadError
   p "You need the moneta gem to use ActiveKV"
   exit

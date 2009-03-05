@@ -1,6 +1,4 @@
 module ActiveKV
-  STORE_DRIVERS = {'memory' => Moneta::Memory}
-  
   class Base
     # Default the key property and configured state to empty states
     @@configured = nil, false
@@ -36,10 +34,13 @@ module ActiveKV
     # Prepares a configuration store based on the given configuration
     def self.load_store(name, config)
       raise "No driver specified in configuration #{store_name}" if config['driver'].nil?
-      driver_class = STORE_DRIVERS[config['driver']]
-      raise "No implementation found for driver #{config['driver']}" if driver_class.nil?
       
-      config.delete 'driver'
+      # Try to create a store driver
+      driver_name = config.delete 'driver'
+      require "moneta/#{driver_name}"
+      class_name = Moneta.constants.find { |c| c.to_s.downcase == driver_name.gsub(/_/, "").downcase }
+      raise "No implementation found for driver #{config['driver']}" if class_name.nil?
+      driver_class = Moneta.const_get(class_name)
       driver_class.new config
     end
     
