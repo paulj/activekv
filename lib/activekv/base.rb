@@ -41,7 +41,7 @@ module ActiveKV
       class_name = Moneta.constants.find { |c| c.to_s.downcase == driver_name.gsub(/_/, "").downcase }
       raise "No implementation found for driver #{config['driver']}" if class_name.nil?
       driver_class = Moneta.const_get(class_name)
-      driver_class.new config
+      driver_class.new transform_hash(config)
     end
     
     # Requests that the ActiveKV forget its configuration
@@ -119,6 +119,18 @@ module ActiveKV
       props.each do |k, v|
         send("#{k}=", v)
       end
+    end
+    
+    # Transforms a hash so it also indexes by symbol
+    def self.transform_hash h
+      result = {}
+      h.each do |k,v|
+        result_v = if v.is_a? Hash then transform_hash(v) else v end
+        
+        result[k] = result_v
+        result[k.to_sym] = result_v
+      end
+      result
     end
   end
   
