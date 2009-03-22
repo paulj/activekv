@@ -30,49 +30,26 @@ require 'rake/clean'
 require 'rake/gempackagetask'
 require 'rake/rdoctask'
 require 'fileutils'
+require 'jeweler'
 include FileUtils
 # $:.push File.join(File.dirname(__FILE__), 'lib')
 
-version = '0.0.1'
-name = "activekv"
-
-spec = Gem::Specification.new do |s|
-	s.name = name
-	s.version = version
-	s.summary = "Ruby Active Key/Value Objects."
-	s.description = "ActiveKV provides ActiveRecord style data storage for Key/Value stores."
-	s.author = "Paul Jones"
-	s.email = "pauljones23@gmail.com"
-	s.homepage = "http://github.com/vuderacha/activekv/"
-	s.executables = []
-	s.default_executable = nil
-
-	s.platform = Gem::Platform::RUBY
-	s.has_rdoc = true
-	
-	s.files = %w(Rakefile README.rdoc) + Dir.glob("{bin,lib,spec}/**/*")
-	
-	s.require_path = "lib"
-	
-	s.add_dependency('activesupport', '>= 2.2.2')
-end
-
-Rake::GemPackageTask.new(spec) do |p|
-	p.need_tar = true if RUBY_PLATFORM !~ /mswin/
-end
-
-desc "Updates the Gemspec for ActiveKV"
-task "activekv.gemspec" do |t|
-  require 'yaml'
-  open(t.name, "w") { |f| f.puts spec.to_yaml }
-end
-
-task :install => [ :test, :package ] do
-	sh %{sudo gem install pkg/#{name}-#{version}.gem}
-end
-
-task :uninstall => [ :clean ] do
-	sh %{sudo gem uninstall #{name}}
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |s|
+    s.name = "activekv"
+  	s.summary = "Ruby Active Key/Value Objects."
+  	s.description = "ActiveKV provides ActiveRecord style data storage for Key/Value stores."
+  	s.author = "Paul Jones"
+  	s.email = "pauljones23@gmail.com"
+  	s.homepage = "http://github.com/vuderacha/activekv/"
+  	
+  	s.files = %w(Rakefile README.rdoc) + Dir.glob("{bin,lib,spec}/**/*")
+  	s.require_path = "lib"
+  	s.add_dependency('activesupport', '>= 2.2.2')
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
 end
 
 task :test => [ :spec ]

@@ -1,68 +1,33 @@
---- !ruby/object:Gem::Specification 
-name: activekv
-version: !ruby/object:Gem::Version 
-  version: 0.0.1
-platform: ruby
-authors: 
-- Paul Jones
-autorequire: 
-bindir: bin
-cert_chain: []
+# -*- encoding: utf-8 -*-
 
-date: 2009-03-22 00:00:00 +00:00
-default_executable: 
-dependencies: 
-- !ruby/object:Gem::Dependency 
-  name: activesupport
-  type: :runtime
-  version_requirement: 
-  version_requirements: !ruby/object:Gem::Requirement 
-    requirements: 
-    - - ">="
-      - !ruby/object:Gem::Version 
-        version: 2.2.2
-    version: 
-description: ActiveKV provides ActiveRecord style data storage for Key/Value stores.
-email: pauljones23@gmail.com
-executables: []
+Gem::Specification.new do |s|
+  s.name = %q{activekv}
+  s.version = "0.0.0"
 
-extensions: []
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.authors = ["Paul Jones"]
+  s.date = %q{2009-03-22}
+  s.description = %q{ActiveKV provides ActiveRecord style data storage for Key/Value stores.}
+  s.email = %q{pauljones23@gmail.com}
+  s.extra_rdoc_files = ["README.rdoc"]
+  s.files = ["Rakefile", "README.rdoc", "lib/activekv", "lib/activekv/base.rb", "lib/activekv.rb", "spec/base.rb", "spec/simple-config.yml"]
+  s.has_rdoc = true
+  s.homepage = %q{http://github.com/vuderacha/activekv/}
+  s.rdoc_options = ["--inline-source", "--charset=UTF-8"]
+  s.require_paths = ["lib"]
+  s.rubygems_version = %q{1.3.1}
+  s.summary = %q{Ruby Active Key/Value Objects.}
 
-extra_rdoc_files: []
+  if s.respond_to? :specification_version then
+    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
+    s.specification_version = 2
 
-files: 
-- Rakefile
-- README.rdoc
-- lib/activekv
-- lib/activekv/base.rb
-- lib/activekv.rb
-- spec/base.rb
-- spec/simple-config.yml
-has_rdoc: true
-homepage: http://github.com/vuderacha/activekv/
-post_install_message: 
-rdoc_options: []
-
-require_paths: 
-- lib
-required_ruby_version: !ruby/object:Gem::Requirement 
-  requirements: 
-  - - ">="
-    - !ruby/object:Gem::Version 
-      version: "0"
-  version: 
-required_rubygems_version: !ruby/object:Gem::Requirement 
-  requirements: 
-  - - ">="
-    - !ruby/object:Gem::Version 
-      version: "0"
-  version: 
-requirements: []
-
-rubyforge_project: 
-rubygems_version: 1.3.1
-signing_key: 
-specification_version: 2
-summary: Ruby Active Key/Value Objects.
-test_files: []
-
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<activesupport>, [">= 2.2.2"])
+    else
+      s.add_dependency(%q<activesupport>, [">= 2.2.2"])
+    end
+  else
+    s.add_dependency(%q<activesupport>, [">= 2.2.2"])
+  end
+end
