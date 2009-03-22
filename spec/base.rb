@@ -28,6 +28,18 @@ describe "ActiveKV::Base" do
     rescue ActiveKV::NotConfiguredError
     end
   end
+  
+  it "should make the key available on the class" do
+    class WithKeyA < ActiveKV::Base
+      key  :a
+    end
+    class WithKeyB < ActiveKV::Base
+      key  :b
+    end
+    
+    WithKeyA.key.should == :a
+    WithKeyB.key.should == :b
+  end
 end
 
 describe "ActiveKV::Base when configured" do

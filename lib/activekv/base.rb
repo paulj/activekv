@@ -50,23 +50,30 @@ module ActiveKV
     end
     
     class << self # Class Methods
-      # Default the key pattern
-      @@key_pattern = ":class/:key"
-    
       # Sets the property that will be used to work out the key for the item
-      def key(key_prop)
-        @@key_prop = key_prop
+      def key(key_prop = nil)
+        if key_prop.nil?
+          return nil if not defined? @key_prop
+          return @key_prop
+        end
+        
+        @key_prop = key_prop
         attr_accessor key_prop
       end
     
       # Changes the pattern used to build keys
-      def key_pattern(pattern)
-        @@key_pattern = pattern
+      def key_pattern(pattern = nil)
+        if pattern.nil?
+          return ":class/:key" if not defined? @key_pattern or @key_pattern.nil?
+          return @key_pattern
+        end
+        
+        @key_pattern = pattern
       end
       
       # Sets the store that is used for instances of this class
       def store(name)
-        @@store = name
+        @store = name
       end
       
       # Finds a record with the given key
@@ -87,13 +94,13 @@ module ActiveKV
 
       # Creates a store key based on the pattern and provided key
       def create_key(key)
-        @@key_pattern.gsub(':class', self.class.name).gsub(':key', key)
+        key_pattern.gsub(':class', self.name).gsub(':key', key)
       end
       
       # Retrieves an instance of the store that is used for this class
       def store_instance
-        if defined? @@store and defined? @@stores[@@store] then 
-          @@stores[@@store] 
+        if defined? @store and defined? @@stores[@store] then 
+          @@stores[@store] 
         else 
           @@default_store 
         end
@@ -104,12 +111,12 @@ module ActiveKV
     def save!
       # Ensure that we have everything we need
       raise NotConfiguredError unless @@configured
-      raise NoKeySpecifiedError if not defined? @@key_prop
-      raise NilKeyError if send(@@key_prop).nil?
+      raise NoKeySpecifiedError if self.class.key.nil?
+      raise NilKeyError if send(self.class.key).nil?
       
       # Transform ourselves to json, and get our key
       new_val = to_json
-      key_val = self.class.create_key send(@@key_prop)
+      key_val = self.class.create_key send(self.class.key)
       
       # Retrieve the appropriate store, and save
       self.class.store_instance[key_val] = new_val
