@@ -47,6 +47,7 @@ begin
   	s.files = %w(Rakefile README.rdoc) + Dir.glob("{bin,lib,spec}/**/*")
   	s.require_path = "lib"
   	s.add_dependency('activesupport', '>= 2.2.2')
+  	s.add_dependency('wycats-moneta', '>= 0.5.0')
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"

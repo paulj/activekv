@@ -148,3 +148,18 @@ module ActiveKV
   class NoKeySpecifiedError < Exception
   end
 end
+
+# Patch to the Moneta datamapper class
+module Moneta
+  class DataMapper
+    def []=(key, value)
+      obj = @hash.get(key)
+      if obj
+        obj.value = value
+        obj.update
+      else
+        @hash.create(:the_key => key, :value => value)
+      end
+    end
+  end
+end
