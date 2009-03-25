@@ -1,3 +1,5 @@
+require 'activesupport'
+
 module ActiveKV
   class Base
     # Default the key property and configured state to empty states
@@ -115,7 +117,7 @@ module ActiveKV
       raise NilKeyError if send(self.class.key).nil?
       
       # Transform ourselves to json, and get our key
-      new_val = to_json
+      new_val = ActiveSupport::JSON.encode(self)
       key_val = self.class.create_key send(self.class.key)
       
       # Retrieve the appropriate store, and save
