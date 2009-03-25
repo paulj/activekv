@@ -1,3 +1,5 @@
+require 'rubygems'
+require 'json' rescue nil   # This prevents the json gem loading afterwards and messing up the JSON serialisation
 require 'activesupport'
 
 module ActiveKV
@@ -7,6 +9,10 @@ module ActiveKV
     
     def initialize(config = {})
       apply_hash!(config)
+    end
+    
+    def to_json(options = {})
+      ActiveSupport::JSON.encode(instance_values, options)
     end
     
     # Configures the ActiveKV support with the given configuration file
