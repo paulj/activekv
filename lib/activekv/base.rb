@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'json' rescue nil   # This prevents the json gem loading afterwards and messing up the JSON serialisation
 require 'activesupport'
+require 'json' rescue nil   # This prevents the json gem loading afterwards and messing up the JSON serialisation
 
 module ActiveKV
   class Base
@@ -12,7 +12,7 @@ module ActiveKV
     end
     
     def to_json(options = {})
-      ActiveSupport::JSON.encode(instance_values, options)
+      instance_values.to_json
     end
     
     # Configures the ActiveKV support with the given configuration file
@@ -123,7 +123,7 @@ module ActiveKV
       raise NilKeyError if send(self.class.key).nil?
       
       # Transform ourselves to json, and get our key
-      new_val = ActiveSupport::JSON.encode(self)
+      new_val = self.to_json
       key_val = self.class.create_key send(self.class.key)
       
       # Retrieve the appropriate store, and save

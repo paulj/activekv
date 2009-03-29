@@ -1,4 +1,6 @@
 $:.push File.join(File.dirname(__FILE__), '..', 'lib')
+# Fix for Textmate problem
+$:.reject! { |e| e.include? 'TextMate' }
 require 'activekv'
 
 RACK_ENV = :test unless defined? RACK_ENV
@@ -108,8 +110,8 @@ describe "ActiveKV::Base when configured" do
       attr_accessor :another_prop
     end
     
-    p = WithSomeParams.new :name => 'asr', :another_prop => 'world'
+    p = WithSomeParams.new :name => 'asr', :another_prop => ['world']
     p.name.should == 'asr'
-    p.another_prop.should == 'world'
+    p.another_prop.should == ['world']
   end
 end
